@@ -8,13 +8,50 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.exceptions import NotFound
 from rest_framework import permissions
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_protect
-from django.utils.decorators import method_decorator
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 # Create your views here.
 
+
+
+class SignInView(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        data = request.data
+
+        try:
+            user = auth.authenticate(username=data['username'], password=data['password'])
+            if user is not None:
+                auth.login(request, user)
+                
+                refresh = RefreshToken.for_user(user)
+                
+                return Response({'message': 'logged in successfully', 'username': data['username'], 
+                                'refresh': str(refresh),
+                                'access': str(refresh.access_token)})
+            else:
+                return Response({'message': 'error in credentials'})
+        except:
+            return Response({'error':'error in sign in'}) 
+
+class SignOutView(APIView):
+
+    def post(self, request):
+        try:
+            auth.logout(request)
+            return Response({'message': 'logged out'})
+        except:
+            Response({'error':'error when logging out'})
+
+
 ###use seesion to get current user
 class RecommendMealView(APIView):
+    
     def post(self, request, format=None):
         
         try:
@@ -44,6 +81,7 @@ class RecommendMealView(APIView):
             return Response({'error':'error in recommend meal'})
 
 class RateMealView(APIView):
+   
     def post(self, request, format=None):
         
         try:
@@ -63,6 +101,7 @@ class RateMealView(APIView):
             return Response({'error':'error in rate meal'})
 
 class GetHistoryView(APIView):
+   
     def post(self, request, format=None):
         try:
             user = self.request.user
@@ -82,30 +121,7 @@ class GetHistoryView(APIView):
 
 
 
-@method_decorator(csrf_protect, name='dispatch')
-class CheckAuthenticatedView(APIView):
-    def get(self, request, format=None):
-        try:
-            isAuthenticated = User.is_authenticated
-            if isAuthenticated:
-                return Response({'isAuthenticated':'Success'})
-            else:
-                return Response({'isAuthenticated':'Error'})
-        except:
-            return Response({'error':'something went wrong when checking authentication error'})
 
-
-@method_decorator(ensure_csrf_cookie, name='dispatch')
-class GetCSRFToken(APIView):
-    permission_classes=(permissions.AllowAny,)
-
-    def get(self, request, format = None):
-        return Response({'success':'CSRF cookie set'})
-
-
-
-
-@method_decorator(csrf_protect, name='dispatch')
 class SignUpView(APIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -133,6 +149,7 @@ class SignUpView(APIView):
             return Response({'error':'something went wrong in signing up user'})
 
 class UserDetails(APIView):
+    
     # def get_object(self,request):
     #     try:
     #         user = self.request.user
@@ -200,7 +217,6 @@ class UserDetails(APIView):
 
 
 class ProfileListView(APIView):
-    # permission_classes = [IsAuthenticated]
     
     def get(self, request, format = None):
         try:
@@ -219,31 +235,6 @@ class UsersListView(APIView):
         except:
             return Response({'error':'something went wrong in user list view'})
 
-
-@method_decorator(csrf_protect, name='dispatch')
-class SignInView(APIView):
-    permission_classes = (permissions.AllowAny,)
-
-    def post(self, request):
-        data = request.data
-
-        try:
-            user = auth.authenticate(username=data['username'], password=data['password'])
-            if user is not None:
-                auth.login(request, user)
-                return Response({'message': 'logged in successfully', 'username': data['username']})
-            else:
-                return Response({'message': 'error in credentials'})
-        except:
-            return Response({'error':'error in sign in'}) 
-
-class SignOutView(APIView):
-    def post(self, request):
-        try:
-            auth.logout(request)
-            return Response({'message': 'logged out'})
-        except:
-            Response({'error':'error when logging out'})
 
 """
 class UserFoodView(APIView):
