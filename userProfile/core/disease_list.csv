@@ -1,26 +1,27 @@
 disease,excluded_ingredients
-Alzheimer's,wheatflour
-Anaemia,
-Arthritis,wheatflour
-Blood Pressure,
-Blood Sugar,
+Alzheimer's,"wheatflour,fish,butter"
+Anaemia,"butter,cheese"
+Arthritis,"wheatflour,butter,alcohol"
+Asthma,
+Blood Pressure,addedsugar
+Blood Sugar,"sugar,rice,wheat,flour,butter,alcohol"
 Cancer,
-Cardiac Deseases,
-Cardiovascular Deseases,
-Cholestrol/High Cholestrol,
-Common Cold,
-Constipation,
-Cough,
-Dementia,
+Cardiac Deseases,addedsugar
+Cardiovascular Deseases,"addedsugar,butter,alcohol"
+Cholestrol/High Cholestrol,"sugar,rice,oil,butter"
+Common Cold,"sugar,milk,cheese,spice"
+Constipation,"rice,pork,butter,alcohol"
+Cough,"milk,sugar,cheese"
+Dementia,butter
 Diabetes,"sugar,potato,rice,banana,butter,flour"
-Diarrhea,mustard
-Heart Attack,butter
-High Blood Pressure,
-High Cholestrol,flour
-Inflammation,
-kidney Failure,pistachio
-Kidney Stone,cashew
-Migraines,
-Ostioarthritis,
+Diarrhea,"milk,cheese,chili"
+Heart Attack,"butter,meat"
+Inflammation,"flour,pork"
+kidney Failure,"pistachio,nut,bean,seed,"
+Kidney Stone,"cashew,spinach,chocolate,fish"
+Migraines,"caffeine,alcohol,cheese"
+Ostioarthritis,"soyabean,oil,milk,cheese,butter"
 Rickets,
-Throat Infection,
+Schizophrenia,
+Throat Infection,"spice,alcohol,cheese"
+Tuberculosis,
